@@ -4,8 +4,8 @@ storage
 /.pnp
 .pnp.js
 
-/coverage
-
+coverage
+test
 build
 
 venv

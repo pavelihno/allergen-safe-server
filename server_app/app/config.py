@@ -9,4 +9,6 @@ class Config:
     SQLALCHEMY_DATABASE_URI = os.environ.get('DATABASE_URI')
     SQLALCHEMY_TRACK_MODIFICATIONS = False
 
+    GOOGLE_CLIENT_ID = os.environ.get('GOOGLE_CLIENT_ID')
+
     CSRF_ENABLED = True

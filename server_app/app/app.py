@@ -37,6 +37,7 @@ migrate = Migrate(app, db)
 # auth
 app.route('/register', methods=['POST'])(register)
 app.route('/login', methods=['POST'])(login)
+app.route('/login-google', methods=['POST'])(login_google)
 app.route('/auth', methods=['GET'])(auth)
 
 # users

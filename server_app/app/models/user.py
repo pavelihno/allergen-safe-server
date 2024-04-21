@@ -9,7 +9,7 @@ class User(db.Model):
     # use UUID instead of Integer
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
     email = db.Column(db.String(), unique=True, nullable=False)
-    password = db.Column(db.String(), nullable=False)
+    password = db.Column(db.String(), nullable=True)
     role = db.Column(db.String(), default='standard')
 
     created_at = db.Column(db.Date, nullable=False)
@@ -36,9 +36,10 @@ class User(db.Model):
 
         user = cls()
         for key, value in data.items():
-            if key == 'password':
-                value = cls.__encode_password(value)
-            setattr(user, key, value)
+            if key not in ['role', 'is_active']:
+                if key == 'password':
+                    value = cls.__encode_password(value)
+                setattr(user, key, value)
 
         user.created_at = datetime.now()
 

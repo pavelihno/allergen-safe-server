@@ -1,14 +1,14 @@
 version: '3'
 services:
   
-  server-app:
-    container_name: server-app
+  app:
+    container_name: app
     build: ./server_app
     ports:
       - 5000:5000
     environment:
-      SECRET_KEY: $SERVER_SECRET_KEY
-      DATABASE_URI: $SERVER_DATABASE_URI
+      - SECRET_KEY=$SERVER_SECRET_KEY
+      - DATABASE_URI=$SERVER_DATABASE_URI
     volumes:
       - ./server_app:/app
     env_file:
@@ -22,36 +22,13 @@ services:
     ports:
       - 5432:5432
     environment:
-      POSTGRES_DB: $POSTGRES_DB
-      POSTGRES_USER: $POSTGRES_USER
-      POSTGRES_PASSWORD: $POSTGRES_PASSWORD
+      - POSTGRES_DB=$POSTGRES_DB
+      - POSTGRES_USER=$POSTGRES_USER
+      - POSTGRES_PASSWORD=$POSTGRES_PASSWORD
     volumes:
       - ./temp/psqlDB:/var/lib/postgresql/data
     env_file:
       - .env
-
-  redis:
-    container_name: redis
-    image: redis:7.2.1-alpine
-    ports:
-      - 6379:6379
-    environment:
-      - REDIS_PASSWORD=$REDIS_PASSWORD
-    env_file:
-      - .env
-
-  redis-commander:
-    container_name: redis-commander
-    image: rediscommander/redis-commander:latest
-    ports:
-        - 8081:8081
-    environment:
-        - REDIS_HOSTS=$REDIS_COMMANDER_HOSTS
-        - REDIS_PASSWORD=$REDIS_PASSWORD
-    env_file:
-      - .env
-    depends_on:
-        - redis
 
   adminer:
     container_name: adminer
@@ -60,5 +37,5 @@ services:
       - 8082:8080
     env_file:
       - .env
-    depends_on: 
+    depends_on:
       - allergen-safe-db
