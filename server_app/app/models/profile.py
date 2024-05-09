@@ -1,4 +1,7 @@
 from database import db
+from models.allergen import Allergen
+from models.reaction import Reaction
+from models.recipe import Recipe
 
 
 class Profile(db.Model):
