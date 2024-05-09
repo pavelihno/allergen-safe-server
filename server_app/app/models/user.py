@@ -6,14 +6,15 @@ from database import db
 class User(db.Model):
     __tablename__ = 'users'
 
-    # use UUID instead of Integer
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
-    email = db.Column(db.String(), unique=True, nullable=False)
-    password = db.Column(db.String(), nullable=True)
-    role = db.Column(db.String(), default='standard')
+    email = db.Column(db.String(20), unique=True, nullable=False)
+    password = db.Column(db.String(20), nullable=True)
+    role = db.Column(db.String(10), default='standard')
 
     created_at = db.Column(db.Date, nullable=False)
     is_active = db.Column(db.Boolean(), default=True)
+
+    profiles = db.relationship('Profile', lazy='select', backref=db.backref('user', lazy='select'))
 
     __table_args__ = (
         db.CheckConstraint(role.in_(['admin', 'standard']), name='role_types'),      
