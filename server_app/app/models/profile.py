@@ -1,10 +1,11 @@
 from database import db
+from models._base import BaseModel
 from models.allergen import Allergen
 from models.reaction import Reaction
 from models.recipe import Recipe
 
 
-class Profile(db.Model):
+class Profile(BaseModel):
     __tablename__ = 'profiles'
 
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
@@ -15,3 +16,14 @@ class Profile(db.Model):
     allergens = db.relationship('Allergen', backref=db.backref('profiles', lazy='select'))
     reactions = db.relationship('Reaction', backref=db.backref('profiles', lazy='select'))
     recipes = db.relationship('Recipe', backref=db.backref('profiles', lazy='select'))
+
+    def to_dict(self):
+        return {
+            'id': self.id,
+            'name': self.name,
+            'user_id': self.user_id
+        }
+
+    @classmethod
+    def get_by_user_id(cls, _user_id):
+        return cls.query.filter_by(user_id=_user_id).all()

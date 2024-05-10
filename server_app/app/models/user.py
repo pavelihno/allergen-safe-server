@@ -2,14 +2,15 @@ from werkzeug.security import generate_password_hash, check_password_hash
 from datetime import datetime
 
 from database import db
+from models._base import BaseModel
 from models.profile import Profile
 
-class User(db.Model):
+class User(BaseModel):
     __tablename__ = 'users'
 
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
-    email = db.Column(db.String(20), unique=True, nullable=False)
-    password = db.Column(db.String(20), nullable=True)
+    email = db.Column(db.String, unique=True, nullable=False)
+    password = db.Column(db.String, nullable=True)
     role = db.Column(db.String(10), default='standard')
 
     created_at = db.Column(db.Date, nullable=False)
@@ -51,14 +52,6 @@ class User(db.Model):
         return user
 
     @classmethod
-    def get_all(cls):
-        return cls.query.all()
-
-    @classmethod
-    def get_by_id(cls, _id):
-        return cls.query.get(_id)
-
-    @classmethod
     def get_by_email(cls, _email):
         return cls.query.filter_by(email=_email).first()
 
@@ -69,15 +62,6 @@ class User(db.Model):
             for key, value in data.items():
                 if key in ['role', 'is_active']:
                     setattr(user, key, value)
-            db.session.commit()
-            return user
-        return None
-
-    @classmethod
-    def delete(cls, _id):
-        user = cls.get_by_id(_id)
-        if user:
-            db.session.delete(user)
             db.session.commit()
             return user
         return None
@@ -105,5 +89,3 @@ class User(db.Model):
     @classmethod
     def __is_password_correct(cls, correct_password, input_password):
         return check_password_hash(correct_password, input_password)
-
-
