@@ -2,7 +2,7 @@ from fastapi import HTTPException
 from fastapi.encoders import jsonable_encoder
 from fastapi.responses import JSONResponse
 
-from ..models.allergen import AllergenRequestBody, AllergenResponseBody
+from app.models.allergen import AllergenRequestBody, AllergenResponseBody
 
 async def identify_potential_allergens(request_body: AllergenRequestBody):
     try:

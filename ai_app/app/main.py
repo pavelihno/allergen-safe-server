@@ -1,7 +1,7 @@
 from fastapi import FastAPI
 
-from .controllers.allergen_controller import *
-from .controllers.recipe_controller import *
+from app.controllers.allergen_controller import identify_potential_allergens
+from app.controllers.recipe_controller import generate_recipe
 
 app = FastAPI()
 

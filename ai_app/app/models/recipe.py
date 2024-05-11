@@ -1,7 +1,7 @@
 from typing import List
 
-from ._base import Base
-from ..models.allergen import ExistingAllergen
+from app.models._base import Base
+from app.models.allergen import ExistingAllergen
 
 class RecipeRequestBody(Base):
     cuisine: str

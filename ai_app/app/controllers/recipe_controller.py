@@ -2,7 +2,7 @@ from fastapi import HTTPException
 from fastapi.encoders import jsonable_encoder
 from fastapi.responses import JSONResponse
 
-from ..models.recipe import RecipeRequestBody, RecipeResponseBody
+from app.models.recipe import RecipeRequestBody, RecipeResponseBody
 
 async def generate_recipe(request_body: RecipeRequestBody):
     try:

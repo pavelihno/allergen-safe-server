@@ -1,6 +1,6 @@
 from typing import List
 
-from ._base import Base
+from app.models._base import Base
 
 class PotentialAllergen(Base):
     id: int
