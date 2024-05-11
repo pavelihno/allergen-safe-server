@@ -17,6 +17,7 @@ class Recipe(BaseModel):
         cuisine = Cuisine.get_by_id(self.cuisine_id)
         return {
             'id': self.id,
+            'name': self.name,
             'ingredients': self.ingredients,
             'description': self.description,
             'profile_id': self.profile_id,
