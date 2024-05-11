@@ -64,5 +64,3 @@ def change_password(current_user):
     if updated_user:
         return updated_user
     return jsonify({'message': 'User not found'}), 404
-
-

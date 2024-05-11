@@ -53,7 +53,6 @@ def login_google():
             return jsonify(token), 200
         return jsonify({'message': 'Failed to create user'}), 500
 
-
 @login_required
 def auth(current_user):
     return jsonify(current_user.to_dict()), 200

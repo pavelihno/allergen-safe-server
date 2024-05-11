@@ -1,35 +1,39 @@
-from flask import jsonify
+from flask import jsonify, request
 
 from app.models.profile import Profile
 from app.models.allergen import Allergen
-from app.models.reaction import Reaction
-from app.models.allergen_type import AllergenType
 from app.middlewares.auth_middleware import login_required
 from app.utils.ai_service import get_ai_response
 
-def identify_potential_allergens(profile_id, reaction_id):
+@login_required
+def create_allergens(current_user, profile_id):
+    body = request.json
     profile = Profile.get_by_id(profile_id)
-    reaction = Reaction.get_by_id(reaction_id)
+    if profile and profile.user_id == current_user.id:
+        allergens = body.get('allergens')
+        if allergens:
+            new_allergens = []
+            for allergen in allergens:
+                new_allergen = Allergen.create(**allergen, profile_id=profile_id)
+                if new_allergen:
+                    new_allergens.append(new_allergen)
+            return jsonify([allergen.to_dict() for allergen in new_allergens])
+    return jsonify({'message': 'Failed to create allergens'}), 400
 
-    ai_response = get_ai_response(
-        'allergens/identify',
-        json={
-            'potential_allergens': [allergen_type.to_dict() for allergen_type in AllergenType.get_all()],
-            'identified_allergens': [allergen.to_dict(for_ai=True) for allergen in profile.allergens],
-            'reactions': [reaction.to_dict(for_ai=True) for reaction in profile.reactions]
-        }
-    )
-
-    identified_allergens = ai_response.get('identified_allergens', [])
-    updated_allergens = ai_response.get('updated_allergens', [])
-
-    for identified_allergen in identified_allergens:
-        new_allergen = Allergen.create(**identified_allergen, profile_id=profile.id)
-
-    for updated_allergen in updated_allergens:
-        allergen = Allergen.update(updated_allergen.get('id'), **updated_allergen)
-
-    return True
+@login_required
+def update_allergens(current_user, profile_id):
+    body = request.json
+    profile = Profile.get_by_id(profile_id)
+    if profile and profile.user_id == current_user.id:
+        allergens = body.get('allergens')
+        if allergens:
+            updated_allergens = []
+            for allergen in allergens:
+                updated_allergen = Allergen.update(allergen.get('id'), **allergen)
+                if updated_allergen:
+                    updated_allergens.append(updated_allergen)
+            return jsonify([allergen.to_dict() for allergen in updated_allergens])
+    return jsonify({'message': 'Failed to update allergens'}), 400
 
 @login_required
 def get_allergens(current_user, profile_id):

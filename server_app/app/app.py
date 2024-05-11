@@ -11,7 +11,7 @@ from app.controllers.user_controller import create_user, get_users, get_user, up
 from app.controllers.profile_controller import create_profile, get_profiles, get_profile, update_profile, delete_profile
 from app.controllers.reaction_controller import create_reaction, get_reactions, get_reaction, update_reaction, delete_reaction
 from app.controllers.recipe_controller import generate_recipe, get_recipes, get_recipe, delete_recipe
-from app.controllers.allergen_controller import get_allergens, get_allergen, delete_allergen
+from app.controllers.allergen_controller import create_allergens, get_allergens, get_allergen, delete_allergen, update_allergens
 
 def __import_models():
    app_dir = 'app'
@@ -75,6 +75,8 @@ app.route('/recipes/<int:profile_id>/<int:recipe_id>', methods=['GET'])(get_reci
 app.route('/recipes/<int:profile_id>/<int:recipe_id>', methods=['DELETE'])(delete_recipe)
 
 # allergens
+app.route('/allergens/<int:profile_id>', methods=['POST'])(create_allergens)
+app.route('/allergens/<int:profile_id>', methods=['PUT'])(update_allergens)
 app.route('/allergens/<int:profile_id>', methods=['GET'])(get_allergens)
 app.route('/allergens/<int:profile_id>/<int:allergen_id>', methods=['GET'])(get_allergen)
 app.route('/allergens/<int:profile_id>/<int:allergen_id>', methods=['DELETE'])(delete_allergen)

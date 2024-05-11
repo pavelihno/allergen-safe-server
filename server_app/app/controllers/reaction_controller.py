@@ -1,9 +1,21 @@
 from flask import request, jsonify
 
-from app.models.reaction import Reaction
 from app.models.profile import Profile
+from app.models.reaction import Reaction
+from app.models.allergen_type import AllergenType
 from app.middlewares.auth_middleware import login_required
 from app.celery_app import identify_potential_allergens_task
+
+def __create_identify_potential_allergens_task(current_user, profile):
+    return identify_potential_allergens_task.delay(
+        current_user.email, 
+        profile.id, 
+        {
+            'potential_allergens': [allergen_type.to_dict() for allergen_type in AllergenType.get_all()],
+            'identified_allergens': [allergen.to_dict(for_ai=True) for allergen in profile.allergens],
+            'reactions': [reaction.to_dict(for_ai=True) for reaction in profile.reactions]
+        }
+    )
 
 @login_required
 def create_reaction(current_user, profile_id):
@@ -12,7 +24,7 @@ def create_reaction(current_user, profile_id):
     if profile and profile.user_id == current_user.id:
         new_reaction = Reaction.create(**body)
         if new_reaction:
-            identify_potential_allergens_task.delay(profile.id, new_reaction.id)
+            __create_identify_potential_allergens_task(current_user, profile)
             return jsonify(new_reaction.to_dict()), 201
     return jsonify({'message': 'Failed to create reaction'}), 400
 
@@ -40,7 +52,7 @@ def update_reaction(current_user, profile_id, reaction_id):
         body = request.json
         updated_reaction = Reaction.update(reaction_id, **body)
         if updated_reaction:
-            identify_potential_allergens_task.delay(profile.id, updated_reaction.id)
+            __create_identify_potential_allergens_task(current_user, profile)
             return jsonify(updated_reaction.to_dict())
     return jsonify({'message': 'Reaction not found'}), 404
 
@@ -50,6 +62,6 @@ def delete_reaction(current_user, profile_id, reaction_id):
     if profile and profile.user_id == current_user.id:
         deleted_reaction = Reaction.delete(reaction_id)
         if deleted_reaction:
-            identify_potential_allergens_task.delay(profile.id, deleted_reaction.id)
+            __create_identify_potential_allergens_task(current_user, profile)
             return jsonify(deleted_reaction.to_dict())
     return jsonify({'message': 'Reaction not found'}), 404

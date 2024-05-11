@@ -1,12 +1,11 @@
+import os, jwt
 from datetime import datetime, timedelta
 
-import jwt
+SECRET_KEY = os.environ.get('SERVER_SECRET_KEY')
 
-from flask import current_app
-
-def signJWT(email):
-    token_data = {'email': email, 'exp': datetime.now() + timedelta(weeks=4)}
-    return jwt.encode(token_data, current_app.config['SECRET_KEY'], algorithm='HS256')
+def signJWT(email, expiration_date=datetime.now() + timedelta(weeks=4)):
+    token_data = {'email': email, 'exp': expiration_date}
+    return jwt.encode(token_data, SECRET_KEY, algorithm='HS256')
 
 def verifyJWT(token):
-    return jwt.decode(token, current_app.config['SECRET_KEY'], algorithms=['HS256'])
+    return jwt.decode(token, SECRET_KEY, algorithms=['HS256'])
