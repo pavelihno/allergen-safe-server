@@ -1,14 +1,11 @@
 version: '3'
 services:
-  
-  app:
-    container_name: app
+
+  server-app:
+    container_name: server-app
     build: ./server_app
     ports:
       - 5000:5000
-    environment:
-      - SECRET_KEY=$SERVER_SECRET_KEY
-      - DATABASE_URI=$SERVER_DATABASE_URI
     volumes:
       - ./server_app:/app
     env_file:
@@ -16,15 +13,21 @@ services:
     depends_on:
       - allergen-safe-db
 
+  ai-app:
+    container_name: ai-app
+    build: ./ai_app
+    ports:
+      - 80:80
+    volumes:
+      - ./ai_app:/app
+    env_file:
+      - .env
+
   allergen-safe-db:
     container_name: allergen-safe-db
     image: postgres:15  
     ports:
       - 5432:5432
-    environment:
-      - POSTGRES_DB=$POSTGRES_DB
-      - POSTGRES_USER=$POSTGRES_USER
-      - POSTGRES_PASSWORD=$POSTGRES_PASSWORD
     volumes:
       - ./temp/psqlDB:/var/lib/postgresql/data
     env_file:
