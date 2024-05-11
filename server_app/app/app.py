@@ -8,6 +8,10 @@ from database import db
 
 from controllers.auth_controller import *
 from controllers.user_controller import *
+from controllers.profile_controller import *
+from controllers.reaction_controller import *
+from controllers.recipe_controller import *
+from controllers.allergen_controller import *
 
 def __import_models():
    app_dir = 'app'
@@ -49,3 +53,28 @@ app.route('/users/<int:user_id>', methods=['DELETE'])(delete_user)
 app.route('/users/<int:user_id>/activate', methods=['PUT'])(activate_user)
 app.route('/users/<int:user_id>/deactivate', methods=['PUT'])(deactivate_user)
 app.route('/users/change-password', methods=['PUT'])(change_password)
+
+# profiles
+app.route('/profiles', methods=['GET'])(get_profiles)
+app.route('/profiles', methods=['POST'])(create_profile)
+app.route('/profiles/<int:profile_id>', methods=['GET'])(get_profile)
+app.route('/profiles/<int:profile_id>', methods=['PUT'])(update_profile)
+app.route('/profiles/<int:profile_id>', methods=['DELETE'])(delete_profile)
+
+# reactions
+app.route('/reactions/<int:profile_id>', methods=['POST'])(create_reaction)
+app.route('/reactions/<int:profile_id>', methods=['GET'])(get_reactions)
+app.route('/reactions/<int:profile_id>/<int:reaction_id>', methods=['GET'])(get_reaction)
+app.route('/reactions/<int:profile_id>/<int:reaction_id>', methods=['PUT'])(update_reaction)
+app.route('/reactions/<int:profile_id>/<int:reaction_id>', methods=['DELETE'])(delete_reaction)
+
+# recipes
+app.route('/recipes/<int:profile_id>', methods=['POST'])(generate_recipe)
+app.route('/recipes/<int:profile_id>', methods=['GET'])(get_recipes)
+app.route('/recipes/<int:profile_id>/<int:recipe_id>', methods=['GET'])(get_recipe)
+app.route('/recipes/<int:profile_id>/<int:recipe_id>', methods=['DELETE'])(delete_recipe)
+
+# allergens
+app.route('/allergens/<int:profile_id>', methods=['GET'])(get_allergens)
+app.route('/allergens/<int:profile_id>/<int:allergen_id>', methods=['GET'])(get_allergen)
+app.route('/allergens/<int:profile_id>/<int:allergen_id>', methods=['DELETE'])(delete_allergen)

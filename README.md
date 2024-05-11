@@ -11,4 +11,6 @@ docker-compose up
 flask db init
 flask db migrate -m <migration-message>
 flask db upgrade
+
+flask db downgrade
 ```
