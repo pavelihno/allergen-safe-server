@@ -11,3 +11,5 @@ RUN pip install --upgrade pip setuptools && pip install --no-cache-dir -r requir
 COPY . /app
 
 EXPOSE 5000
+
+CMD ["python3", "-m", "flask", "run", "--host=0.0.0.0", "--debug"]
