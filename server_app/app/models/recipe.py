@@ -1,6 +1,6 @@
-from database import db
-from models._base import BaseModel
-from models.cuisine import Cuisine
+from app.database import db
+from app.models._base import BaseModel
+from app.models.cuisine import Cuisine
 
 class Recipe(BaseModel):
     __tablename__ = 'recipes'

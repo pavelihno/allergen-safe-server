@@ -1,10 +1,10 @@
 from flask import request, jsonify
 
-from models.profile import Profile
-from models.cuisine import Cuisine
-from models.recipe import Recipe
-from middlewares.auth_middleware import login_required
-from utils.ai_service import get_ai_response
+from app.models.profile import Profile
+from app.models.cuisine import Cuisine
+from app.models.recipe import Recipe
+from app.middlewares.auth_middleware import login_required
+from app.utils.ai_service import get_ai_response
 
 @login_required
 def generate_recipe(current_user, profile_id):

@@ -1,9 +1,9 @@
 from flask import request, jsonify
 
-from models.user import User
-from utils.jwt import signJWT
-from utils.google_auth import get_google_user_data
-from middlewares.auth_middleware import login_required
+from app.models.user import User
+from app.utils.jwt import signJWT
+from app.utils.google_auth import get_google_user_data
+from app.middlewares.auth_middleware import login_required
 
 def register():
     body = request.json

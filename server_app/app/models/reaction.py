@@ -1,6 +1,6 @@
-from database import db
-from models._base import BaseModel
-from models.reaction_type import ReactionType
+from app.database import db
+from app.models._base import BaseModel
+from app.models.reaction_type import ReactionType
 
 class Reaction(BaseModel):
     __tablename__ = 'reactions'

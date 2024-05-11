@@ -1,8 +1,8 @@
 from flask import request, jsonify
 
-from models.profile import Profile
-from models.user import User
-from middlewares.auth_middleware import login_required
+from app.models.profile import Profile
+from app.models.user import User
+from app.middlewares.auth_middleware import login_required
 
 @login_required
 def create_profile(current_user):

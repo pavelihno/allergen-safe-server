@@ -1,12 +1,15 @@
 from flask import jsonify
 
-from models.profile import Profile
-from models.allergen import Allergen
-from models.allergen_type import AllergenType
-from middlewares.auth_middleware import login_required
-from utils.ai_service import get_ai_response
+from app.models.profile import Profile
+from app.models.allergen import Allergen
+from app.models.reaction import Reaction
+from app.models.allergen_type import AllergenType
+from app.middlewares.auth_middleware import login_required
+from app.utils.ai_service import get_ai_response
 
-def identify_potential_allergens(profile, new_or_updated_reaction):
+def identify_potential_allergens(profile_id, reaction_id):
+    profile = Profile.get_by_id(profile_id)
+    reaction = Reaction.get_by_id(reaction_id)
 
     ai_response = get_ai_response(
         'allergens/identify',

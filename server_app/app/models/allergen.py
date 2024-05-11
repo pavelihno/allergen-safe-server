@@ -1,6 +1,6 @@
-from database import db
-from models._base import BaseModel
-from models.allergen_type import AllergenType
+from app.database import db
+from app.models._base import BaseModel
+from app.models.allergen_type import AllergenType
 
 class Allergen(BaseModel):
     __tablename__ = 'allergens'

@@ -4,14 +4,31 @@ services:
   server-app:
     container_name: server-app
     build: ./server_app
+    command: python3 -m flask run --host=0.0.0.0 --debug
     ports:
       - 5000:5000
     volumes:
       - ./server_app:/app
+    environment:
+      - FLASK_APP=app/app.py
     env_file:
       - .env
     depends_on:
       - allergen-safe-db
+
+  celery:
+    container_name: celery
+    build: ./server_app
+    command: python3 -m celery worker --loglevel=info
+    volumes:
+      - ./server_app:/app
+    environment:
+      - CELERY_APP=app.celery_app
+    env_file:
+      - .env
+    depends_on:
+      - server-app
+      - redis
 
   ai-app:
     container_name: ai-app
@@ -32,6 +49,12 @@ services:
       - ./temp/psqlDB:/var/lib/postgresql/data
     env_file:
       - .env
+
+  redis:
+    image: redis:alpine
+    container_name: redis
+    ports:
+      - 6379:6379
 
   adminer:
     container_name: adminer

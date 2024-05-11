@@ -1,8 +1,8 @@
-from database import db
-from models._base import BaseModel
-from models.allergen import Allergen
-from models.reaction import Reaction
-from models.recipe import Recipe
+from app.database import db
+from app.models._base import BaseModel
+from app.models.allergen import Allergen
+from app.models.reaction import Reaction
+from app.models.recipe import Recipe
 
 
 class Profile(BaseModel):

@@ -1,5 +1,5 @@
-from database import db
-from models._base import BaseModel
+from app.database import db
+from app.models._base import BaseModel
 
 class Cuisine(BaseModel):
     __tablename__ = 'cuisines'

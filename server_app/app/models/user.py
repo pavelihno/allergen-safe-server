@@ -1,9 +1,9 @@
 from werkzeug.security import generate_password_hash, check_password_hash
 from datetime import datetime
 
-from database import db
-from models._base import BaseModel
-from models.profile import Profile
+from app.database import db
+from app.models._base import BaseModel
+from app.models.profile import Profile
 
 class User(BaseModel):
     __tablename__ = 'users'

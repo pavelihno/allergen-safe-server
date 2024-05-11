@@ -3,15 +3,15 @@ import importlib
 from flask import Flask
 from flask_migrate import Migrate
 
-from config import Config
-from database import db
+from app.config import Config
+from app.database import db
 
-from controllers.auth_controller import *
-from controllers.user_controller import *
-from controllers.profile_controller import *
-from controllers.reaction_controller import *
-from controllers.recipe_controller import *
-from controllers.allergen_controller import *
+from app.controllers.auth_controller import register, login, login_google, auth
+from app.controllers.user_controller import create_user, get_users, get_user, update_user, delete_user, activate_user, deactivate_user, change_password
+from app.controllers.profile_controller import create_profile, get_profiles, get_profile, update_profile, delete_profile
+from app.controllers.reaction_controller import create_reaction, get_reactions, get_reaction, update_reaction, delete_reaction
+from app.controllers.recipe_controller import generate_recipe, get_recipes, get_recipe, delete_recipe
+from app.controllers.allergen_controller import get_allergens, get_allergen, delete_allergen
 
 def __import_models():
    app_dir = 'app'
@@ -19,7 +19,7 @@ def __import_models():
    for dir_path, dir_names, file_names in os.walk('/'.join([app_dir, models_dir])):
       for file_name in [f for f in file_names if f.endswith('.py') and f != '__init__.py']:
          file_path_wo_ext, _ = os.path.splitext(os.path.join(dir_path, file_name))
-         module_name = file_path_wo_ext.replace(os.sep, '.').replace(f"{app_dir}.", '')
+         module_name = file_path_wo_ext.replace(os.sep, '.')
          importlib.import_module(module_name, package=None)
 
    return True
