@@ -23,12 +23,14 @@ def identify_potential_allergens_task(email, profile_id, request_data):
         'allergens/identify',
         json=request_data
     )
+    if ai_response:
+        identified_allergens = ai_response.get('identified_allergens', [])
+        updated_allergens = ai_response.get('updated_allergens', [])
 
-    identified_allergens = ai_response.get('identified_allergens', [])
-    updated_allergens = ai_response.get('updated_allergens', [])
-
-    if identified_allergens:
-        __send_request(email, 'POST', f'allergens/{profile_id}', {'allergens': identified_allergens})
-    if updated_allergens:
-        __send_request(email, 'PUT', f'allergens/{profile_id}', {'allergens': updated_allergens})
-    return True
+        if identified_allergens:
+            __send_request(email, 'POST', f'allergens/{profile_id}', {'allergens': identified_allergens})
+        if updated_allergens:
+            __send_request(email, 'PUT', f'allergens/{profile_id}', {'allergens': updated_allergens})
+        return True
+    else:
+        return False

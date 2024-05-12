@@ -5,12 +5,15 @@ class BaseModel(db.Model):
 
     @classmethod
     def create(cls, **data):
-        model = cls()
-        for key, value in data.items():
-            setattr(model, key, value)
-        db.session.add(model)
-        db.session.commit()
-        return model
+        try:
+            model = cls()
+            for key, value in data.items():
+                setattr(model, key, value)
+            db.session.add(model)
+            db.session.commit()
+            return model
+        except Exception:
+            return None
 
     @classmethod
     def get_all(cls):
@@ -22,14 +25,17 @@ class BaseModel(db.Model):
 
     @classmethod
     def update(cls, _id, **data):
-        model = cls.get_by_id(_id)
-        if model:
-            for key, value in data.items():
-                if value:
-                    setattr(model, key, value)
-            db.session.commit()
-            return model
-        return None
+        try:
+            model = cls.get_by_id(_id)
+            if model:
+                for key, value in data.items():
+                    if value:
+                        setattr(model, key, value)
+                db.session.commit()
+                return model
+            return None
+        except Exception:
+            return None
 
     @classmethod
     def delete(cls, _id):

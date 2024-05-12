@@ -22,15 +22,16 @@ def generate_recipe(current_user, profile_id):
                     'allergens': [allergen.to_dict(for_ai=True) for allergen in profile.allergens]
                 }
             )
-            new_recipe = Recipe.create(
-                name=ai_response['name'],
-                ingredients=ai_response['ingredients'],
-                description=ai_response['description'],
-                cuisine_id=cuisine_id,
-                profile_id=profile_id
-            )
-            if new_recipe:
-                return jsonify(new_recipe.to_dict()), 201
+            if ai_response:
+                new_recipe = Recipe.create(
+                    name=ai_response.get('name'),
+                    ingredients=ai_response.get('ingredients'),
+                    description=ai_response.get('description'),
+                    cuisine_id=cuisine_id,
+                    profile_id=profile_id
+                )
+                if new_recipe:
+                    return jsonify(new_recipe.to_dict()), 201
     return jsonify({'message': 'Failed to generate recipe'}), 400
 
 @login_required
