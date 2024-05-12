@@ -1,12 +1,17 @@
 from typing import List
 
 from app.models._base import Base
-from app.models.allergen import ExistingAllergen
+
+class Allergen(Base):
+    allergen_name: str
+    allergen_weight: float
+    nFASS: float
+    probability: float
 
 class RecipeRequestBody(Base):
     cuisine: str
     description: str
-    allergens: List[ExistingAllergen]
+    allergens: List[Allergen]
 
 class RecipeResponseBody(Base):
     name: str
