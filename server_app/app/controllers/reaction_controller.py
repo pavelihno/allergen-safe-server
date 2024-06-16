@@ -8,8 +8,8 @@ from app.celery_app import identify_potential_allergens_task
 
 def __create_identify_potential_allergens_task(current_user, profile):
     return identify_potential_allergens_task.delay(
-        current_user.email, 
-        profile.id, 
+        current_user.email,
+        profile.id,
         {
             'potential_allergens': [allergen_type.to_dict() for allergen_type in AllergenType.get_all()],
             'identified_allergens': [allergen.to_dict(for_ai=True) for allergen in profile.allergens],

@@ -3,7 +3,6 @@ from flask import jsonify, request
 from app.models.profile import Profile
 from app.models.allergen import Allergen
 from app.middlewares.auth_middleware import login_required
-from app.utils.ai_service import get_ai_response
 
 @login_required
 def create_allergens(current_user, profile_id):
